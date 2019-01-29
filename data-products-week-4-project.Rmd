@@ -2,8 +2,10 @@
 title: Developing Data Products course - Assignment Week 4 - Shiny Application and
   Reproducible Pitch
 author: "Rudradip Misra"
-date: "January 27, 2019"
-output: slidy_presentation
+date: "January 29, 2019"
+output:
+  ioslides_presentation: default
+  slidy_presentation: default
 ---
 
 ```{r setup, include=FALSE}
@@ -14,53 +16,45 @@ knitr::opts_chunk$set(echo = FALSE)
 
  - This presentation is one half of the assignemnt of week 4, ***Developing Data Products course from Coursera*** (<https://www.coursera.org/learn/data-products>). 
  
- - The presentation is meant to show information about the second half of the above mentioned assignment (a development project). 
+ -It is meant to describe and pitch information about an app developed through Shiny to help property investors determine profitability of a specific property they are interested in investing in. 
 
- - The presentation was generated using ***RStudio***(<https://www.rstudio.com>) and ***Slidify***(<http://slidify.org>) framework.
+ 
 
 ## Application
 
- - The second half of the mentioned assignment was to develop a web application. The application was named ***MPG Prediction***. 
+ - The second half of the mentioned assignment was to develop a web application. The application was named ***Investment Property***. 
  
 
  - This application shows an example of making a web application using R and [Shiny](https://shiny.rstudio.com) framework together.
  
- - In the application, a prediction model is generated, based on a car parameters dataset (HP, weight, gears, etc.). Then, a user can play freely with the UI values in order to simulate the parameters of an hypothetical car and be able to predict its MPG consumption.
+## Description
  
- - The application and the current presentation source codes can be found at <https://github.com/laplata2003/data-products-week-4-project>. The application comprises 3 files: *ui.R* (UI), *server.R* (backend) and *modelBuilding.R* (Random Forest predictor).
-  
-## Dataset
+ - It is meant to describe and pitch information about an app developed through Shiny to help property investors determine profitability of a specific property they are interested in investing in.
+ 
+ In the application, anyone who is interested in purchasing property for investment purposes can input the purchase price or market value of a property and derive a range of weekly rents necessary to make a profit on the property. The output is generated through calculations programmed in R.
+ 
+ - The application and the current presentation source codes can be found at <https://github.com/rudradip/Week4DDP> and <https://rudradip-misra.shinyapps.io/Week4DDP/>. The application comprises 2 files: *ui.R* (UI), *server.R* (backend) . 
+ 
+## Example R Code
 
-Dataset used by the application is the [Motor Trend Car Road Tests](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/mtcars.html) (from now on *'mtcars'*). The data was extracted from the ***1974 Motor Trend*** US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973-74 models).
 
-Next, the dataset structure: 
-```{r cars, echo = TRUE}
-str(mtcars)
+An example of how the R code calculates the weekly profit or deficit for the property investor is below. Assuming the property costs the investor $200 per week and the weekly rent is $350. After deducting the quarterly water fees of $50 and the weekly community fees of $10, the property inverstor will earn a $136 weekly profit.
+
+: 
+```{r  echo = TRUE}
+
+rent<-350
+water<-50
+fees<-10
+mortgage<-200
+  result <- (rent * 52 - (water) * 4 - fees * 52 - mortgage * 52) / 52
+  return(round(result, digits = 2))
+
 ```
 
-## Prediction
+## Conclusion
 
-A Random Forest prediction model is generated and trained using the *'mtcars'* dataset. The goal of this model is to predict the fuel consumption (***mpg*** variable) based on the rest of the variables:
-```{r echo = FALSE}
-suppressWarnings(suppressMessages(library(caret)))
-suppressWarnings(suppressMessages(library(randomForest)))
 
-set.seed(210915)
+This app can be a very useful tool for property investors looking to do a quick calculation to deterine profitability. The github repository containing the Shiny programs (ui.R and server.R) are found here:
 
-```
-
-```{r echo = TRUE}
-customTrainControl <- trainControl(method = "cv", number = 10)
-carsRandomForestModelBuilder <- function() {
-  return(
-    train(
-      mpg ~ ., 
-      data = mtcars,
-      method = "rf",
-      trControl = customTrainControl
-    )
-  )
-}
-
-carsRandomForestModelBuilder()
-```
+https://github.com/rudradip/Week4DDP
